@@ -1,10 +1,13 @@
 #ifndef RATIONAL_H
 #define RATIONAL_H
 
+#include <iostream>
+
 class Rational {
     private:
         int num;
         int denom;
+        static int gcd(int a, int b);
     public:
         Rational(int num, int denom);
         Rational(int num);
