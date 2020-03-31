@@ -7,7 +7,7 @@ class Rational {
     private:
         int num;
         int denom;
-        static int gcd(int a, int b);
+        //static int gcd(int a, int b);
     public:
         Rational(int num, int denom);
         Rational(int num);
