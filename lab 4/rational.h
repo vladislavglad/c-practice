@@ -7,7 +7,7 @@ class Rational {
     private:
         int num;
         int denom;
-        //static int gcd(int a, int b);
+        static int gcd(int a, int b);
     public:
         Rational(int num, int denom);
         Rational(int num);
@@ -36,6 +36,6 @@ class Rational {
         void print(std::ostream &os) const;
 };
 
-inline std::ostream &operator <<(std::ostream &os, const Rational &r) {r.print(os);}
+inline std::ostream &operator <<(std::ostream &os, const Rational &r) {r.print(os); return os;}
 
 #endif

@@ -1,18 +1,18 @@
+#include <iostream>
 #include "rational.h"
 #include "rational_exception.h"
-#include <iostream>
 
-int get_divisor(int a, int b) {
+int Rational::gcd(int a, int b) {
     if(b == 0)
         return a;
-    return get_divisor(b, a % b);
+    return gcd(b, a % b);
 }
 
 Rational::Rational(int num, int denom) : num(num), denom(denom) {
     if (denom == 0) {
         throw RationalException("Can't have 0 denom.");
     } else {
-        int divisor = get_divisor(num, denom);
+        int divisor = gcd(num, denom);
         this->num = num / divisor;
         this->denom = denom / divisor;
     }
@@ -43,7 +43,7 @@ Rational Rational::div(const Rational &other) const {return mul(other.inv());}
 Rational &Rational::addInPlace(const Rational &other) {
     num = num * other.denom + other.num * denom;
     denom = denom * other.denom;
-    int divisor = get_divisor(num, denom);
+    int divisor = gcd(num, denom);
     num /= divisor;
     denom /= divisor;
 
@@ -56,7 +56,7 @@ Rational &Rational::subInPlace(const Rational &other) {return addInPlace(other.n
 Rational &Rational::mulInPlace(const Rational &other) {
     num = num * other.num;
     denom = denom * other.denom;
-    int divisor = get_divisor(num, denom);
+    int divisor = gcd(num, denom);
     num /= divisor;
     denom /= divisor;
 
@@ -67,7 +67,7 @@ Rational &Rational::divInPlace(const Rational &other) {return mulInPlace(other.i
 
 int Rational::compareTo(const Rational &other) const {
     //Find difference and inspect it.
-    int temp = this->num * other.denom - other.num * this->denom;
+    int temp = num * other.denom - other.num * denom;
 
     if (temp > 0) return 1;
     else if (temp < 0) return -1;
