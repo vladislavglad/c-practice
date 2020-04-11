@@ -4,7 +4,7 @@ private:
     char letterGrade;
 public:
     Course(int code, int credits, char letterGrade): code(code), credits(credits), letterGrade(letterGrade) {}
-    
+
     int getCode() const {return code;}
     int getCredits() const {return credits;}
     char getLetterGrade() const {return letterGrade;}

@@ -3,24 +3,22 @@
 #include <string>
 #include <vector>
 #include <set>
-#include <algorithm>
 #include "student.h"
 
 using namespace std;
 
-void load(string fname, set<Student> &students);
-void print(set<Student> &students);
+void load(string fname, set<Student, greater<Student>> &students);
+void print(set<Student, greater<Student>> &students);
 
 int main() {
     try {
-        set<Student> students;
+        //"global" set container.
+        set<Student, greater<Student>> students;
 
         load("student.dat", students);
 
         print(students);
 
-        // ofstream ofs("result.dat");
-        // if (!ofs) throw string("No output file");
     } catch(string error) {
         cout << error << endl;
         exit(1);
@@ -28,36 +26,46 @@ int main() {
     return 0;
 }
 
-//first prototype.
-void load(string fname, set<Student> &students) {
+void load(string fname, set<Student, greater<Student>> &students) {
     ifstream ifs(fname);
     if (!ifs) throw string("No such file");
 
-    vector<Course> courses;
+    //declare and initialize temporary vars.
     int id, code, credits;
-    string name;
-    char grade;
+    id = code = credits = 0;
+    string name = "No_name";
+    char grade = 'X';
 
-    ifs >> id;
-    ifs >> name;
-    ifs >> code;
-    ifs >> credits;
-    ifs >> grade;
+    while (!ifs.eof()) {
+        ifs >> id;
+        ifs >> name;
 
-    Course course(code, credits, grade);
-    courses.push_back(course);
+        //some more local variables.
+        vector<Course> courses;
+        int flag;
 
-    Student student(id, name, courses);
+        ifs >> flag;
+        while (flag != -1) {
+            code = flag;
+            ifs >> credits;
+            ifs >> grade;
+            Course course(code, credits, grade);
+            courses.push_back(course);
 
+            ifs >> flag;
+        }
+
+        Student student(id, name, courses);
+        students.insert(student);
+    }
     ifs.close();
 }
 
-//need to figure out.
-void print(set<Student> &students) {
+void print(set<Student, greater<Student>> &students) {
     auto iter = students.begin();
 
-    // Student student();
-    // cout << student.getId() << endl;
-    // cout << student.getName() << endl;
-    // cout << student.getGPA() << endl;
+    for (iter; iter != students.end(); ++iter) {
+        cout << *iter;
+    }
+    cout << '\n' << students.size() << " records processed" << endl;
 }
