@@ -17,7 +17,7 @@ public:
     int getId() const {return id;}
     string getName() const {return name;}
     vector<Course> getCourses() const {return courses;}
-    double getGPA() {return gpa;}
+    double const getGPA() {return gpa;}
 
     bool operator>(const Student &other) const {return gpa > other.gpa;}
     bool operator<(const Student &other) const {return gpa < other.gpa;}

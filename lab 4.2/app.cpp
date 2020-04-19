@@ -64,7 +64,7 @@ void load(string fname, set<Student, greater<Student>> &students) {
 void print(set<Student, greater<Student>> &students) {
     auto iter = students.begin();
 
-    for (iter; iter != students.end(); ++iter) {
+    for (iter; iter != students.end(); iter++) {
         cout << *iter;
     }
     cout << '\n' << students.size() << " records processed" << endl;
