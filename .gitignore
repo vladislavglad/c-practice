@@ -1,5 +1,5 @@
 .vscode
-a.exe
-a.out
+*.exe
+*.out
 student.cpp
 student_test.cpp
