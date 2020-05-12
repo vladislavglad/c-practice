@@ -3,3 +3,4 @@
 *.out
 student.cpp
 student_test.cpp
+rational_test.cpp
