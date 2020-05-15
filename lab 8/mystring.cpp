@@ -43,9 +43,10 @@ namespace mystring {
     }
 
     string operator+(const string &s1, const string &s2) {
-        char *temp = strcat(s1.cs, s2.cs);
+        string temp1 = s1;
+        strcat(temp1.cs, s2.cs);
 
-        return string(temp);
+        return temp1;
     }
 
     string::~string() {
