@@ -3,7 +3,7 @@
 #include "mystring.h"
 #include "mystring_exception.h"
 
-#define DEFAULT_SIZE 10000
+#define DEFAULT_SIZE 100
 
 namespace mystring {
 
@@ -11,15 +11,18 @@ namespace mystring {
     char *strcat(char *dest, const char *src);
     int strlen(const char *str);
 
+    bool needs_resizing(int len1, int len2) {
+        return (len1 + len2 + 1) > DEFAULT_SIZE;
+    }
+
     string::string(const char* cs): cs(new char[DEFAULT_SIZE]) {
         strcpy(this->cs, cs);
     }
 
-    string::string(const string &s): cs(new char[DEFAULT_SIZE]) {
-        strcpy(cs, s.cs);
-    }
+    string::string(const string &s): string(s.cs) {}
 
     void string::clear() {
+        delete [] cs;
         cs = new char[DEFAULT_SIZE];
     }
 
@@ -36,10 +39,6 @@ namespace mystring {
         }
 
         return os;
-    }
-
-    char *end_pointer(char* str) {
-        return &str[strlen(str)];
     }
 
     string operator+(const string &s1, const string &s2) {
@@ -84,7 +83,28 @@ namespace mystring {
     }
 
     char *strcpy(char *dest, const char *src) {
-        char *start = dest;
+
+        char *start = dest, *temp, *temp_start;
+
+        if (needs_resizing( strlen(dest), strlen(src) )) {
+            temp = new char[strlen(dest) + strlen(src) + 1];
+
+            // Save pointer to the first index (to later retrieve it).
+            temp_start = temp;
+
+            // Copy contents of the original character array.
+            while(*dest) {
+                *temp = *dest;
+                dest++;
+                temp++;
+            }
+
+            // Overwrite the "start" pointer.
+            start = temp_start;
+
+            // dest is now resized (and pointing to the first element).
+            dest = temp_start;
+        }
 
         while (*src) {
             *dest = *src;
@@ -97,7 +117,26 @@ namespace mystring {
     }
 
     char *strcat(char *dest, const char *src) {
-        char *start = dest;
+
+        char *start = dest, *temp, *temp_start;
+        if (needs_resizing( strlen(dest), strlen(src) )) {
+            temp = new char[strlen(dest) + strlen(src) + 1];
+
+            temp_start = temp;
+
+            // Copy contents of the original character array.
+            while(*dest) {
+                *temp = *dest;
+                dest++;
+                temp++;
+            }
+
+            // Overwrite the "start" pointer.
+            start = temp_start;
+
+            // dest is now resized (and pointing to the first element).
+            dest = temp_start;
+        }
 
         // Approach to the trailing value.
         while(*dest)
